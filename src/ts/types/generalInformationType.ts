@@ -1,4 +1,4 @@
 export type GeneralInformation = {
-  totalCustomers: number;
-  totalActiveCustomers: number;
+  totalCustomers: string;
+  totalActiveCustomers: string;
 };
