@@ -6,7 +6,8 @@
   "scripts": {
     "start": "parcel",
     "start-server": "json-server --watch db.json --port 3000",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
