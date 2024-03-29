@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>Javascript Practice</title>
+
+    <link rel="stylesheet" href="styles/index.css" />
+    <script type="module" src="ts/index.ts"></script>
+  </head>
+
+  <body>
+    <main>
+      <div class="overlay">
+        <div class="spinner-container">
+          <span class="spinner"></span>
+        </div>
+      </div>
+      <div class="modal modal-add-update">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title"></h3>
+            <img
+              src="./assets/images/modal/close-btn.png"
+              alt="modal close button"
+              class="btn-close-modal"
+            />
+          </div>
+          <form class="form-submit">
+            <div class="input-item">
+              <label class="input-label">
+                customer name
+                <span class="required">*</span>
+              </label>
+              <input type="text" name="name" class="input-field name" />
+              <p class="message-error"></p>
+            </div>
+            <div class="input-item">
+              <label class="input-label">
+                company
+                <span class="required">*</span>
+              </label>
+              <input type="text" name="company" class="input-field company" />
+              <p class="message-error"></p>
+            </div>
+            <div class="input-item">
+              <label class="input-label">
+                phone number
+                <span class="required">*</span>
+              </label>
+              <input type="text" name="phone" class="input-field phone" />
+              <p class="message-error"></p>
+            </div>
+            <div class="input-item">
+              <label class="input-label">
+                email
+                <span class="required">*</span>
+              </label>
+              <input type="text" name="email" class="input-field email" />
+              <p class="message-error"></p>
+            </div>
+            <div class="input-item">
+              <label class="input-label">
+                country
+                <span class="required">*</span>
+              </label>
+              <select name="country" class="input-field country">
+                <option value=""></option>
+                <option value="Cambodia">Cambodia</option>
+                <option value="Laos">Laos</option>
+                <option value="Malaysia">Malaysia</option>
+                <option value="Myanmar">Myanmar</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Vietnam">Vietnam</option>
+              </select>
+              <p class="message-error"></p>
+            </div>
+            <div class="input-item input-status">
+              <label class="input-label">status</label>
+              <label class="switch">
+                <input type="checkbox" name="status" />
+                <span class="slider-round"></span>
+              </label>
+            </div>
+            <button class="btn btn-primary btn-submit" type="submit">
+              submit
+            </button>
+            <button class="btn btn-secondary btn-cancel" type="button">
+              cancel
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="modal modal-remove">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Do you want to remove this customer?</h3>
+            <img
+              src="./assets/images/modal/close-btn.png"
+              alt="modal close button"
+              class="btn-close-remove-modal"
+            />
+          </div>
+
+          <div class="btn-remove-group">
+            <button class="btn btn-primary btn-accept-remove" type="button">
+              yes
+            </button>
+            <button class="btn btn-secondary btn-deny-remove" type="button">
+              no
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="nav-container">
+        <h1 class="dashboard-title">
+          <img src="./assets/images/dashboard/dashboard-logo.webp" alt="logo" />
+          Dashboard
+          <span class="version">v.01</span>
+        </h1>
+        <nav class="nav">
+          <div class="nav-menu">
+            <div class="menu-item">
+              <div class="menu-item-label">
+                <img
+                  src="./assets/images/dashboard/dashboard-icon.webp"
+                  alt="dashboard"
+                />
+                <h2>Dashboard</h2>
+              </div>
+            </div>
+
+            <div class="menu-item">
+              <div class="menu-item-label">
+                <img
+                  src="./assets/images/dashboard/product-icon.webp"
+                  alt="product"
+                />
+                <h2>Product</h2>
+              </div>
+              <img
+                src="./assets/images/dashboard/right-icon.webp"
+                alt="right arrow"
+              />
+            </div>
+
+            <div class="menu-item menu-item-active">
+              <div class="menu-item-label">
+                <img
+                  src="./assets/images/dashboard/customers-icon.webp"
+                  alt="customers"
+                />
+                <h2>Customers</h2>
+              </div>
+              <img
+                src="./assets/images/dashboard/right-icon-active.webp"
+                alt="right arrow"
+              />
+            </div>
+
+            <div class="menu-item">
+              <div class="menu-item-label">
+                <img
+                  src="./assets/images/dashboard/income-icon.webp"
+                  alt="income"
+                />
+                <h2>Income</h2>
+              </div>
+              <img
+                src="./assets/images/dashboard/right-icon.webp"
+                alt="right arrow"
+              />
+            </div>
+
+            <div class="menu-item">
+              <div class="menu-item-label">
+                <img
+                  src="./assets/images/dashboard/promote-icon.webp"
+                  alt="promote"
+                />
+                <h2>Promote</h2>
+              </div>
+              <img
+                src="./assets/images/dashboard/right-icon.webp"
+                alt="right arrow"
+              />
+            </div>
+
+            <div class="menu-item">
+              <div class="menu-item-label">
+                <img
+                  src="./assets/images/dashboard/help-icon.webp"
+                  alt="help"
+                />
+                <h2>Help</h2>
+              </div>
+              <img
+                src="./assets/images/dashboard/right-icon.webp"
+                alt="right arrow"
+              />
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <div class="main-container">
+        <div class="snackbar">
+          <div class="status-icon"></div>
+          <p class="snackbar-msg"></p>
+        </div>
+        <div class="container general-information">
+          <div class="total-customers">
+            <img
+              src="./assets/images/general-information/total-customers.webp"
+              alt="total customers img"
+            />
+            <div class="total-customers-information">
+              <p class="information-title">total customers</p>
+              <p class="quantity customers-quantity">0</p>
+              <div class="growth">this month</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="active-now">
+            <img
+              src="./assets/images/general-information/active-now.webp"
+              alt="active now img"
+            />
+            <div class="active-now-information">
+              <p class="information-title">active now</p>
+              <p class="quantity active-quantity">0</p>
+              <div class="customers-images">
+                <img
+                  src="./assets/images/general-information/customer-1.webp"
+                  alt="customer 1"
+                />
+                <img
+                  src="./assets/images/general-information/customer-2.webp"
+                  alt="customer 2"
+                />
+                <img
+                  src="./assets/images/general-information/customer-3.webp"
+                  alt="customer 3"
+                />
+                <img
+                  src="./assets/images/general-information/customer-4.webp"
+                  alt="customer 4"
+                />
+                <img
+                  src="./assets/images/general-information/customer-5.webp"
+                  alt="customer 5"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container customers-table-section">
+          <div class="customers-table-header">
+            <h3 class="customers-table-heading">all customers</h3>
+            <div class="customers-tools-bar">
+              <img
+                src="./assets/images/customers-table/add-icon.webp"
+                alt="add icon"
+                class="add-customer-btn"
+              />
+              <div class="search-container">
+                <button class="search-btn">
+                  <img
+                    src="./assets/images/customers-table/search-icon.webp"
+                    alt="search icon"
+                  />
+                </button>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  name="search"
+                  class="search-input"
+                />
+              </div>
+              <div class="sort-container">
+                <p class="sort-option-label">Sort by:</p>
+                <select class="sort-option-list">
+                  <option value="id" class="sort-option"></option>
+                  <option value="name" class="sort-option">Name</option>
+                  <option value="company" class="sort-option">Company</option>
+                  <option value="email" class="sort-option">Email</option>
+                  <option value="status" class="sort-option">Status</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="customers-table-body">
+            <div class="table-header">
+              <h4 class="table-heading">customer name</h4>
+              <h4 class="table-heading">company</h4>
+              <h4 class="table-heading">phone number</h4>
+              <h4 class="table-heading">email</h4>
+              <h4 class="table-heading">country</h4>
+              <h4 class="table-heading">status</h4>
+            </div>
+            <ul class="table-body"></ul>
+            <div class="table-footer">
+              <p class="message-showing-data"></p>
+              <div class="btn-pagination">
+                <button class="btn-pagination-previous">&lt;</button>
+                <button class="btn-pagination-next">&gt;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

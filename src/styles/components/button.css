@@ -1,0 +1,33 @@
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 264px;
+  height: 62px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  border-radius: 5px;
+  text-transform: capitalize;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #377dff;
+}
+
+.btn-primary:hover {
+  background-color: #5932ea;
+}
+
+.btn-secondary {
+  background-color: #b5b7c0;
+}
+
+.btn-secondary:hover {
+  background-color: #9197b3;
+}
