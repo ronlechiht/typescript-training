@@ -5,5 +5,5 @@ export type Customer = {
   phone: string;
   email: string;
   country: string;
-  status: boolean;
+  status: string;
 };

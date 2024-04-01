@@ -20,7 +20,7 @@ export class HttpService {
 
   static async get(
     path: string,
-    params: Record<string, string>,
+    params?: Record<string, string>,
   ): Promise<Response> {
     if (params) {
       const queryString: string = buildQueryString(params);
