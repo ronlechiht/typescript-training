@@ -1,0 +1,27 @@
+.nav-container {
+  background-color: #fff;
+  width: 17%;
+  height: 100vh;
+  box-shadow: 10px 0px 10px rgba(226, 236, 249, 0.5);
+  padding: 36px 28px;
+  position: fixed;
+}
+
+.dashboard-title {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  font-size: 26px;
+  line-height: 39px;
+  font-weight: 600;
+}
+
+.version {
+  font-size: 10px;
+  font-weight: 400;
+  color: #838383;
+}
+
+.nav {
+  margin-top: 53px;
+}
