@@ -2,23 +2,24 @@
 import { CUSTOMERS_API } from '../constants/constants';
 import { HttpService } from '../services/httpServices';
 import { genTable } from '../templates/tableTemplate';
+import { Customer } from '../types/customerType';
+import { QueryParams } from '../types/queryParamsType';
+import { CustomerFormData } from '../types/formDataType';
 
 //Get HTML element
-const customersTable = document.querySelector('.customers-table-body')!;
 
-const customerService = new HttpService<FormData>(CUSTOMERS_API);
+const customerService = new HttpService<CustomerFormData>(CUSTOMERS_API);
 
 //Get customers list from API
-async function getCustomersList(
-  params: Record<string, string>,
-): Promise<object> {
+async function getCustomersList(params: QueryParams): Promise<Customer[]> {
   return customerService.get(params);
 }
 
 //Render customers table
 export async function displayCustomersTable(
-  params: Record<string, string>,
+  params: QueryParams,
 ): Promise<void> {
+  const customersTable = document.querySelector('.customers-table-body')!;
   try {
     const customers = await getCustomersList(params);
 

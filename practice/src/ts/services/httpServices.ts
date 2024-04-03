@@ -1,10 +1,16 @@
 import { buildQueryString } from '../utils/buildQueryString';
+import { Customer } from '../types/customerType';
+import { QueryParams } from '../types/queryParamsType';
 
 export class HttpService<Type> {
   constructor(private baseAPI: string) {}
 
-  async request(path: string, method: string, data?: Type): Promise<Response> {
-    return fetch(path, {
+  async request(
+    path: string,
+    method: string,
+    data?: Type,
+  ): Promise<Customer[]> {
+    const res = await fetch(path, {
       method,
       headers: {
         'Content-Type': 'application/json',
@@ -12,10 +18,11 @@ export class HttpService<Type> {
       ...(data && {
         body: JSON.stringify(data),
       }),
-    }).then((value) => value.json());
+    });
+    return res.json();
   }
 
-  async get(params?: Record<string, string>): Promise<Response> {
+  get(params?: QueryParams): Promise<Customer[]> {
     let path: string = this.baseAPI;
     if (params) {
       const queryString: string = buildQueryString(params);

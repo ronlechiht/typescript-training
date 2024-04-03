@@ -1,7 +1,8 @@
 import { CUSTOMER_TABLE_HEADING } from '../constants/constants';
 import { genCustomersList } from './customerTemplate';
+import { QueryParams } from '../types/queryParamsType';
 
-function genTableHeader(CUSTOMER_TABLE_HEADING: Array<string>): string {
+function genTableHeader(CUSTOMER_TABLE_HEADING: string[]): string {
   const headings = CUSTOMER_TABLE_HEADING.map((heading) => {
     return `
       <h4 class="table-heading">${heading}</h4>
@@ -26,10 +27,7 @@ function genTableFooter(firstRecord: number, lastRecord: number): string {
   `;
 }
 
-export function genTable(
-  customers: object,
-  params: Record<string, string>,
-): string {
+export function genTable(customers: object, params: QueryParams): string {
   const firstRecord = (Number(params.page) - 1) * Number(params.limit) + 1;
   const lastRecord =
     (Number(params.page) - 1) * Number(params.limit) +

@@ -1,7 +1,7 @@
 export const GENERAL_API = process.env.API_URL + '/general';
 export const CUSTOMERS_API = process.env.API_URL + '/customers';
 
-export const CUSTOMER_TABLE_HEADING: Array<string> = [
+export const CUSTOMER_TABLE_HEADING: string[] = [
   'customer name',
   'company',
   'phone number',
@@ -10,7 +10,7 @@ export const CUSTOMER_TABLE_HEADING: Array<string> = [
   'status',
 ];
 
-export const enum PARAMS_KEY {
+export const enum QUERY_PARAM_KEYS {
   page = 'page',
   limit = 'limit',
   search = 'name',
