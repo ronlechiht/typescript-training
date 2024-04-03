@@ -1,6 +1,6 @@
 import { QUERY_PARAM_KEYS } from './constants/constants';
-import { displayGeneralInformation } from './views/generalViews';
-import { displayCustomersTable } from './views/customersVIew';
+import { displayGeneralInformation } from './views/generalView';
+import { displayCustomersTable } from './views/customersView';
 import { QueryParams } from './types/queryParamsType';
 
 /**
