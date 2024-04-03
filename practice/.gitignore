@@ -1,0 +1,6 @@
+node_modules
+dist
+package-lock.json
+.parcel-cache
+.env
+.vercel

@@ -1,9 +1,8 @@
-export type Customer = {
-  id: string;
+export interface CustomerFormData {
   name: string;
   company: string;
   phone: string;
   email: string;
   country: string;
   status: boolean;
-};
+}
