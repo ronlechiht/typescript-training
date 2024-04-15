@@ -22,6 +22,7 @@ export class CustomerView {
     this.bindPagination();
     this.bindSearchDebounce(debounce(this.displayCustomersTable));
     this.bindSearchOnChanged();
+    this.bindSortOnChanged();
   }
 
   displayCustomersTable = async (params: QueryParams): Promise<void> => {
@@ -65,6 +66,7 @@ export class CustomerView {
       this.params[QUERY_PARAM_KEYS.search] = (
         searchInput as HTMLInputElement
       ).value;
+
       handler(this.params);
     });
   };
@@ -75,6 +77,23 @@ export class CustomerView {
       this.params[QUERY_PARAM_KEYS.search] = (
         searchInput as HTMLInputElement
       ).value;
+
+      this.displayCustomersTable(this.params);
+    });
+  };
+
+  bindSortOnChanged = () => {
+    const sortOption = <HTMLInputElement>(
+      document.querySelector('.sort-option-list')!
+    );
+    sortOption.addEventListener('change', () => {
+      this.params[QUERY_PARAM_KEYS.sort] = sortOption.value;
+      if (sortOption.value === 'id') {
+        this.params[QUERY_PARAM_KEYS.order] = 'desc';
+      } else {
+        this.params[QUERY_PARAM_KEYS.order] = 'asc';
+      }
+
       this.displayCustomersTable(this.params);
     });
   };
