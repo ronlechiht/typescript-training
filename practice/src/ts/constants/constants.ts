@@ -1,6 +1,8 @@
 export const GENERAL_API = process.env.API_URL + '/general';
 export const CUSTOMERS_API = process.env.API_URL + '/customers';
 
+export const DEBOUNCE_DELAY = 2000;
+
 export const CUSTOMER_TABLE_HEADING: string[] = [
   'customer name',
   'company',
