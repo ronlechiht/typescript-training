@@ -16,7 +16,7 @@ function genCustomer(customer: Customer): string {
   return cells.join('');
 }
 
-export function genCustomersList(customers: object): string {
+export function genCustomersList(customers: object | string): string {
   const rows = Object.values(customers).map((customer) => {
     return `
     <li class="customer" id="${customer['id']}"}>${genCustomer(customer) + genDropDownMenuContainer()}</li>

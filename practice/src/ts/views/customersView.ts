@@ -4,6 +4,7 @@ import { HttpService } from '../services/httpServices';
 import { genTable } from '../templates/tableTemplate';
 import { QueryParams } from '../types/queryParamsType';
 import { CustomerFormData } from '../types/formDataType';
+import { debounce } from '../utils/debounce';
 
 export class CustomerView {
   customerService: HttpService<CustomerFormData>;
@@ -19,6 +20,8 @@ export class CustomerView {
     };
 
     this.bindPagination();
+    this.bindSearchDebounce(debounce(this.displayCustomersTable));
+    this.bindSearchOnChanged();
   }
 
   displayCustomersTable = async (params: QueryParams): Promise<void> => {
@@ -26,7 +29,7 @@ export class CustomerView {
     try {
       const customers = await this.customerService.get(params);
 
-      if (!Object.keys(customers).length) {
+      if (!Object.keys(customers).length || customers === 'Not found') {
         customersTable.innerHTML = `
         <p class="message-empty">There are no customers in the list</p>
         `;
@@ -53,6 +56,26 @@ export class CustomerView {
         this.params[QUERY_PARAM_KEYS.page] -= 1;
         this.displayCustomersTable(this.params);
       }
+    });
+  };
+
+  bindSearchDebounce = (handler) => {
+    const searchInput = document.querySelector('.search-input')!;
+    searchInput.addEventListener('keyup', () => {
+      this.params[QUERY_PARAM_KEYS.search] = (
+        searchInput as HTMLInputElement
+      ).value;
+      handler(this.params);
+    });
+  };
+
+  bindSearchOnChanged = () => {
+    const searchInput = document.querySelector('.search-input')!;
+    searchInput.addEventListener('change', () => {
+      this.params[QUERY_PARAM_KEYS.search] = (
+        searchInput as HTMLInputElement
+      ).value;
+      this.displayCustomersTable(this.params);
     });
   };
 }

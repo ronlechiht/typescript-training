@@ -49,7 +49,10 @@ function genTableFooter(
   `;
 }
 
-export function genTable(customers: object, params: QueryParams): string {
+export function genTable(
+  customers: object | string,
+  params: QueryParams,
+): string {
   const firstRecord = (Number(params.page) - 1) * Number(params.limit) + 1;
   const lastRecord =
     (Number(params.page) - 1) * Number(params.limit) +

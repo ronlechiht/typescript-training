@@ -22,7 +22,7 @@ export class HttpService<Type> {
     return res.json();
   }
 
-  get(params?: QueryParams): Promise<Customer[]> {
+  get(params?: QueryParams): Promise<Customer[] | string> {
     let path: string = this.baseAPI;
     if (params) {
       const queryString: string = buildQueryString(params);
