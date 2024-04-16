@@ -1,25 +1,68 @@
-import { validateForm } from '../utils/validation';
+import { validateForm, validateField } from '../utils/validation';
 import { LIST_ERROR_MSG } from '../constants/constants';
+import { formatPhoneNumber } from '../utils/formatPhoneNumber';
 
 export class FormView {
   addUpdateForm: HTMLFormElement;
   submitBtn: HTMLElement;
   cancelBtn: HTMLElement;
-  inputFields: NodeListOf<Element>;
+  inputFields: NodeListOf<HTMLInputElement>;
+  inputPhone: HTMLInputElement;
+  inputStatus: HTMLInputElement;
 
   constructor() {
     this.addUpdateForm = document.querySelector('.form-submit')!;
     this.submitBtn = this.addUpdateForm.querySelector('.btn-submit')!;
-    this.cancelBtn = this.addUpdateForm.querySelector('.cancel-submit')!;
+    this.cancelBtn = this.addUpdateForm.querySelector('.btn-cancel')!;
     this.inputFields = this.addUpdateForm.querySelectorAll('.input-field')!;
+    this.inputPhone = this.addUpdateForm.querySelector('input[name="phone"]')!;
+    this.inputStatus = this.addUpdateForm.querySelector(
+      'input[name="status"]',
+    )!;
+
+    this.bindFormatToPhone();
+    this.bindValidateFields();
   }
+
+  bindFormatToPhone = () => {
+    this.inputPhone.addEventListener('keyup', () =>
+      formatPhoneNumber(this.inputPhone),
+    );
+  };
+
+  bindValidateFields = () => {
+    for (let i = 0; i < this.inputFields.length; i++) {
+      if (this.inputFields[i].name === 'country') {
+        this.inputFields[i].addEventListener('change', () => {
+          const error = validateField(
+            this.inputFields[i].name,
+            this.inputFields[i].value,
+          );
+          if (error) this.displayFieldError(this.inputFields[i], error);
+          else this.hideFieldError(this.inputFields[i]);
+        });
+      } else {
+        this.inputFields[i].addEventListener('blur', () => {
+          const error = validateField(
+            this.inputFields[i].name,
+            this.inputFields[i].value,
+          );
+          if (error) this.displayFieldError(this.inputFields[i], error);
+          else this.hideFieldError(this.inputFields[i]);
+        });
+      }
+    }
+  };
 
   getFormData = () => {
     const formData = new FormData(this.addUpdateForm);
-    const customer = [...formData.keys()].reduce((acc, key) => {
-      acc[key] = formData.get(key);
-      return acc;
-    }, {});
+    const customer = [...formData.keys()].reduce<Record<string, string>>(
+      (acc, key) => {
+        acc[key] = String(formData.get(key));
+        return acc;
+      },
+      {},
+    );
 
     const errors = validateForm(customer);
 
@@ -31,22 +74,44 @@ export class FormView {
     return customer;
   };
 
-  displayFormErrors = (errors) => {
+  displayFormErrors = (errors: Record<string, string>) => {
     for (const key in errors) {
-      const inputField = this.addUpdateForm.querySelector('.' + key);
+      const inputField: HTMLInputElement = this.addUpdateForm.querySelector(
+        '.' + key,
+      )!;
       this.displayFieldError(inputField, errors[key]);
     }
   };
 
-  displayFieldError = (inputField, error) => {
+  displayFieldError = (inputField: HTMLInputElement, error: string) => {
     inputField.classList.add('field-error');
-    const errorMessage = inputField.nextElementSibling;
+    const errorMessage = inputField.nextElementSibling!;
     errorMessage.innerHTML = LIST_ERROR_MSG[inputField.name][error];
   };
 
-  bindSubmitForm = (addHandler) => {
+  resetInput = () => {
+    this.inputFields.forEach((inputField) => {
+      (inputField as HTMLInputElement).value = '';
+    });
+
+    this.inputStatus.checked = false;
+  };
+
+  hideFormErrors = () => {
+    this.inputFields.forEach((inputField) => {
+      this.hideFieldError(inputField as HTMLInputElement);
+    });
+  };
+
+  hideFieldError = (inputField: HTMLInputElement) => {
+    inputField.classList.remove('field-error');
+    inputField.nextElementSibling!.innerHTML = '';
+  };
+
+  bindSubmitForm = (addHandler: CallableFunction) => {
     this.submitBtn.addEventListener('click', async (event) => {
       event.preventDefault();
+      this.hideFormErrors();
       const customer = this.getFormData();
       if (customer) {
         addHandler(customer);

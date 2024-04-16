@@ -1,8 +1,15 @@
 import { VALIDATE_REGEX } from '../constants/constants';
+import { CustomerFormData } from '../types/formDataType';
 
 const validateEmptiness = (input: string): string | null => {
   if (input) return null;
   return 'required';
+};
+
+const validateHTMLTag = (input: string): string | null => {
+  const re: RegExp = VALIDATE_REGEX.hasHTMLTag;
+  if (!re.test(input)) return null;
+  return 'invalid';
 };
 
 const validatePhoneNumber = (phoneNumber: string): string | null => {
@@ -18,29 +25,29 @@ const validateEmail = (email: string): string | null => {
 };
 
 const validationSchema = {
-  name: [validateEmptiness],
-  company: [validateEmptiness],
+  name: [validateEmptiness, validateHTMLTag],
+  company: [validateEmptiness, validateHTMLTag],
   phone: [validateEmptiness, validatePhoneNumber],
   email: [validateEmptiness, validateEmail],
   country: [validateEmptiness],
 };
 
-export const validateForm = (data) => {
-  const errors = {};
+export const validateForm = (data: Record<string, string>) => {
+  const errors: Record<string, string> = {};
 
   for (const key in data) {
-    const error = validateField(key, data[key]);
+    const error = validateField(key, data[key as keyof CustomerFormData]);
     if (error) errors[key] = error;
   }
 
   return errors;
 };
 
-export const validateField = (field, input) => {
+export const validateField = (field: string, input: string) => {
   let error = null;
   if (Object.prototype.hasOwnProperty.call(validationSchema, field)) {
     const customerProperty = input;
-    const validators = validationSchema[field];
+    const validators = validationSchema[field as keyof typeof validationSchema];
     for (const validator of validators) {
       error = validator(customerProperty);
       if (error) break;

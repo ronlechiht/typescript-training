@@ -1,3 +1,5 @@
+import { FormView } from './formView';
+
 export class ModalView {
   customerID: string | null;
   openModalBtn: HTMLElement;
@@ -5,15 +7,16 @@ export class ModalView {
   modalTitle: HTMLElement;
   closeModalBtn: HTMLElement;
   addUpdateForm: HTMLElement;
-  cancelBtn: HTMLElement;
+  formView: FormView;
 
   constructor() {
+    this.customerID = null;
     this.openModalBtn = document.querySelector('.add-customer-btn')!;
     this.addUpdateModal = document.querySelector('.modal-add-update')!;
     this.modalTitle = this.addUpdateModal.querySelector('.modal-title')!;
     this.closeModalBtn = this.addUpdateModal.querySelector('.btn-close-modal')!;
     this.addUpdateForm = this.addUpdateModal.querySelector('.form-submit')!;
-    this.cancelBtn = this.addUpdateForm.querySelector('.btn-cancel')!;
+    this.formView = new FormView();
 
     this.bindOpenModal();
     this.bindCloseModal();
@@ -26,6 +29,8 @@ export class ModalView {
 
   hideModal = () => {
     this.addUpdateModal.classList.remove('element-visible');
+    this.formView.hideFormErrors();
+    this.formView.resetInput();
   };
 
   bindOpenModal = () => {
@@ -37,6 +42,6 @@ export class ModalView {
 
   bindCloseModal = () => {
     this.closeModalBtn.addEventListener('click', () => this.hideModal());
-    this.cancelBtn.addEventListener('click', () => this.hideModal());
+    this.formView.cancelBtn.addEventListener('click', () => this.hideModal());
   };
 }

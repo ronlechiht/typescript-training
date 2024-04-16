@@ -5,13 +5,11 @@ import { genTable } from '../templates/tableTemplate';
 import { QueryParams } from '../types/queryParamsType';
 import { CustomerFormData } from '../types/formDataType';
 import { debounce } from '../utils/debounce';
-import { FormView } from './formView';
 import { ModalView } from './modalView';
 
 export class CustomerView {
   customerService: HttpService<CustomerFormData>;
   params: QueryParams;
-  formView: FormView;
   modalView: ModalView;
 
   constructor() {
@@ -22,14 +20,13 @@ export class CustomerView {
       [QUERY_PARAM_KEYS.sort]: 'id',
       [QUERY_PARAM_KEYS.order]: 'desc',
     };
-    this.formView = new FormView();
     this.modalView = new ModalView();
 
     this.bindPagination();
     this.bindSearchDebounce(debounce(this.displayCustomersTable));
     this.bindSearchOnChanged();
     this.bindSortOnChanged();
-    this.formView.bindSubmitForm(this.addCustomer);
+    this.modalView.formView.bindSubmitForm(this.addCustomer);
   }
 
   displayCustomersTable = async (params: QueryParams): Promise<void> => {
@@ -50,7 +47,7 @@ export class CustomerView {
     }
   };
 
-  addCustomer = async (customer) => {
+  addCustomer = async (customer: CustomerFormData) => {
     await this.customerService.post(customer);
     await this.displayCustomersTable(this.params);
     this.modalView.hideModal();
@@ -73,7 +70,7 @@ export class CustomerView {
     });
   };
 
-  bindSearchDebounce = (handler) => {
+  bindSearchDebounce = (handler: CallableFunction) => {
     const searchInput = document.querySelector('.search-input')!;
     searchInput.addEventListener('keyup', () => {
       this.params[QUERY_PARAM_KEYS.search] = (
