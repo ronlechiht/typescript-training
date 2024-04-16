@@ -10,7 +10,7 @@ function genCustomer(customer: Customer): string {
   const cells = Object.keys(customer).map((key: string) => {
     if (key === 'id') return;
     if (key === 'status') return genStatus(customer[key]);
-    return `<p>${customer[key as keyof Customer]}</p>`;
+    return `<p class="${key}-cell">${customer[key as keyof Customer]}</p>`;
   });
 
   return cells.join('');

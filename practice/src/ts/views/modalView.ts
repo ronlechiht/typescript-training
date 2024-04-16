@@ -4,6 +4,7 @@ export class ModalView {
   customerID: string | null;
   openModalBtn: HTMLElement;
   addUpdateModal: HTMLElement;
+  removeModal: HTMLElement;
   modalTitle: HTMLElement;
   closeModalBtn: HTMLElement;
   addUpdateForm: HTMLElement;
@@ -13,6 +14,7 @@ export class ModalView {
     this.customerID = null;
     this.openModalBtn = document.querySelector('.add-customer-btn')!;
     this.addUpdateModal = document.querySelector('.modal-add-update')!;
+    this.removeModal = document.querySelector('.modal-remove')!;
     this.modalTitle = this.addUpdateModal.querySelector('.modal-title')!;
     this.closeModalBtn = this.addUpdateModal.querySelector('.btn-close-modal')!;
     this.addUpdateForm = this.addUpdateModal.querySelector('.form-submit')!;
@@ -25,6 +27,22 @@ export class ModalView {
   displayAddModal = () => {
     this.addUpdateModal.classList.add('element-visible');
     this.modalTitle.innerHTML = 'Add Customer';
+  };
+
+  displayEditModal = (id: string) => {
+    this.addUpdateModal.classList.add('element-visible');
+    this.modalTitle.innerHTML = 'Update Customer';
+    for (const inputField of this.formView.inputFields) {
+      const key = inputField.name;
+      inputField.value = document
+        .getElementById(id)!
+        .querySelector('.' + key + '-cell')!.innerHTML;
+    }
+    this.formView.inputStatus.checked = true;
+  };
+
+  displayRemoveModal = () => {
+    this.removeModal.classList.add('element-visible');
   };
 
   hideModal = () => {
