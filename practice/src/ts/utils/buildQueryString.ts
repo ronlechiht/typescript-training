@@ -6,7 +6,7 @@ export function buildQueryString(params: QueryParams): string {
   if (params) {
     const urlParams = new URLSearchParams();
     for (const key in params) {
-      urlParams.append(key, params[key]);
+      urlParams.append(key, String(params[key as keyof QueryParams]));
     }
     queryString = queryString + urlParams;
   }

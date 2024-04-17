@@ -8,9 +8,7 @@ const generalService = new HttpService(GENERAL_API);
 //Get general information from API
 async function getGeneralInformation(): Promise<GeneralInformation> {
   const res = await generalService.get();
-  const totalCustomers = res[0]['totalCustomers'];
-  const totalActiveCustomers = res[0]['totalActiveCustomers'];
-  return { totalCustomers, totalActiveCustomers };
+  return res[0] as GeneralInformation;
 }
 
 //Display general information in general table

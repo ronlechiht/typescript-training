@@ -1,5 +1,6 @@
 import { buildQueryString } from '../utils/buildQueryString';
 import { Customer } from '../types/customerType';
+import { GeneralInformation } from '../types/generalInformationType';
 import { QueryParams } from '../types/queryParamsType';
 
 export class HttpService<Type> {
@@ -22,7 +23,9 @@ export class HttpService<Type> {
     return res.json();
   }
 
-  get(params?: QueryParams): Promise<Customer[]> {
+  get(
+    params?: QueryParams,
+  ): Promise<Customer[] | GeneralInformation[] | string> {
     let path: string = this.baseAPI;
     if (params) {
       const queryString: string = buildQueryString(params);
@@ -36,7 +39,7 @@ export class HttpService<Type> {
     await this.request(this.baseAPI, 'POST', data);
   }
 
-  async put(id: string, data: Type): Promise<void> {
+  async put(data: Type, id: string): Promise<void> {
     const path = `${this.baseAPI}/${id}`;
     await this.request(path, 'PUT', data);
   }

@@ -10,13 +10,13 @@ function genCustomer(customer: Customer): string {
   const cells = Object.keys(customer).map((key: string) => {
     if (key === 'id') return;
     if (key === 'status') return genStatus(customer[key]);
-    return `<p>${customer[key]}</p>`;
+    return `<p class="${key}-cell">${customer[key as keyof Customer]}</p>`;
   });
 
   return cells.join('');
 }
 
-export function genCustomersList(customers: object): string {
+export function genCustomersList(customers: object | string): string {
   const rows = Object.values(customers).map((customer) => {
     return `
     <li class="customer" id="${customer['id']}"}>${genCustomer(customer) + genDropDownMenuContainer()}</li>

@@ -4,5 +4,5 @@ export interface CustomerFormData {
   phone: string;
   email: string;
   country: string;
-  status: boolean;
+  status: string;
 }

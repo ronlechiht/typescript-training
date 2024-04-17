@@ -1,17 +1,13 @@
-import { QUERY_PARAM_KEYS } from './constants/constants';
 import { displayGeneralInformation } from './views/generalView';
-import { displayCustomersTable } from './views/customersView';
-import { QueryParams } from './types/queryParamsType';
+import { CustomerView } from './views/customersView';
+import { ModalView } from './views/modalView';
+import { DropdownMenuView } from './views/dropdownMenuView';
 
-/**
- * Init parameter for query customers
- * Default page is 1
- * Default page size is 8
- */
-const params: QueryParams = {
-  [QUERY_PARAM_KEYS.page]: 1,
-  [QUERY_PARAM_KEYS.limit]: 8,
-};
+const customerView = new CustomerView();
+const modalView = new ModalView();
+const dropdownMenuView = new DropdownMenuView();
 
 displayGeneralInformation();
-displayCustomersTable(params);
+customerView.displayCustomersTable(customerView.params);
+modalView;
+dropdownMenuView;
