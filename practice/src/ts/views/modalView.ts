@@ -1,4 +1,4 @@
-import { FormView } from './formView';
+import { FormView } from './formView.ts';
 
 export class ModalView {
   openModalBtn: HTMLElement;
