@@ -3,6 +3,7 @@ import { LIST_ERROR_MSG } from '../constants/constants';
 import { formatPhoneNumber } from '../utils/formatPhoneNumber';
 
 export class FormView {
+  static customerID: string | null;
   addUpdateForm: HTMLFormElement;
   submitBtn: HTMLElement;
   cancelBtn: HTMLElement;
@@ -11,6 +12,7 @@ export class FormView {
   inputStatus: HTMLInputElement;
 
   constructor() {
+    FormView.customerID = null;
     this.addUpdateForm = document.querySelector('.form-submit')!;
     this.submitBtn = this.addUpdateForm.querySelector('.btn-submit')!;
     this.cancelBtn = this.addUpdateForm.querySelector('.btn-cancel')!;
@@ -64,6 +66,8 @@ export class FormView {
       {},
     );
 
+    if (customer.status !== 'on') customer.status = '~off';
+
     const errors = validateForm(customer);
 
     if (Object.keys(errors).length) {
@@ -108,13 +112,17 @@ export class FormView {
     inputField.nextElementSibling!.innerHTML = '';
   };
 
-  bindSubmitForm = (addHandler: CallableFunction) => {
+  bindSubmitForm = (
+    addHandler: CallableFunction,
+    editHandler: CallableFunction,
+  ) => {
     this.submitBtn.addEventListener('click', async (event) => {
       event.preventDefault();
       this.hideFormErrors();
       const customer = this.getFormData();
       if (customer) {
-        addHandler(customer);
+        if (!FormView.customerID) addHandler(customer);
+        else editHandler(customer, FormView.customerID);
       }
     });
   };

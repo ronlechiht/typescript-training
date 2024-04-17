@@ -39,7 +39,7 @@ export class HttpService<Type> {
     await this.request(this.baseAPI, 'POST', data);
   }
 
-  async put(id: string, data: Type): Promise<void> {
+  async put(data: Type, id: string): Promise<void> {
     const path = `${this.baseAPI}/${id}`;
     await this.request(path, 'PUT', data);
   }

@@ -7,6 +7,7 @@ export class DropdownMenuView {
     this.modalView = new ModalView();
     this.bindClickDropdownBtn();
   }
+
   bindClickDropdownBtn = () => {
     const customersTable = document.querySelector('.customers-table-body')!;
     customersTable.addEventListener('click', (event) => {
@@ -25,25 +26,31 @@ export class DropdownMenuView {
           dropdownMenu.classList.remove('element-visible');
         } else {
           dropdownMenu.classList.add('element-visible');
-          this.bindDropdownMenuOptions(editOption, removeOption);
+          //Get customer row element
+          const id = (dropdownMenu.parentNode!.parentNode! as Element).id;
+          this.bindDropdownMenuOptions(editOption, removeOption, id);
         }
       }
     });
   };
 
-  bindDropdownMenuOptions = (editOption: Element, removeOption: Element) => {
+  bindDropdownMenuOptions = (
+    editOption: Element,
+    removeOption: Element,
+    id: string,
+  ) => {
     editOption.addEventListener('click', (event) => {
       ((event.target! as Element).parentNode! as Element).classList.remove(
         'element-visible',
       );
-      this.modalView.displayEditModal('26');
+      this.modalView.displayEditModal(id);
     });
 
     removeOption.addEventListener('click', (event) => {
       ((event.target! as Element).parentNode! as Element).classList.remove(
         'element-visible',
       );
-      this.modalView.displayRemoveModal();
+      this.modalView.displayRemoveModal(id);
     });
   };
 }

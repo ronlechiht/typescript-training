@@ -1,7 +1,6 @@
 import { FormView } from './formView';
 
 export class ModalView {
-  customerID: string | null;
   openModalBtn: HTMLElement;
   addUpdateModal: HTMLElement;
   removeModal: HTMLElement;
@@ -11,7 +10,6 @@ export class ModalView {
   formView: FormView;
 
   constructor() {
-    this.customerID = null;
     this.openModalBtn = document.querySelector('.add-customer-btn')!;
     this.addUpdateModal = document.querySelector('.modal-add-update')!;
     this.removeModal = document.querySelector('.modal-remove')!;
@@ -25,23 +23,30 @@ export class ModalView {
   }
 
   displayAddModal = () => {
+    FormView.customerID = null;
     this.addUpdateModal.classList.add('element-visible');
     this.modalTitle.innerHTML = 'Add Customer';
   };
 
   displayEditModal = (id: string) => {
+    FormView.customerID = id;
     this.addUpdateModal.classList.add('element-visible');
     this.modalTitle.innerHTML = 'Update Customer';
+    //Get customer row
+    const customerRow = document.getElementById(id)!;
     for (const inputField of this.formView.inputFields) {
       const key = inputField.name;
-      inputField.value = document
-        .getElementById(id)!
-        .querySelector('.' + key + '-cell')!.innerHTML;
+      inputField.value = customerRow.querySelector(
+        '.' + key + '-cell',
+      )!.innerHTML;
     }
-    this.formView.inputStatus.checked = true;
+    //Get customer status
+    this.formView.inputStatus.checked =
+      !!customerRow.querySelector('.status-active');
   };
 
-  displayRemoveModal = () => {
+  displayRemoveModal = (id: string) => {
+    FormView.customerID = id;
     this.removeModal.classList.add('element-visible');
   };
 
@@ -53,7 +58,6 @@ export class ModalView {
 
   bindOpenModal = () => {
     this.openModalBtn.addEventListener('click', () => {
-      this.customerID = null;
       this.displayAddModal();
     });
   };
