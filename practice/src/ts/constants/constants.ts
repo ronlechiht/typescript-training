@@ -1,4 +1,3 @@
-import { Map } from '../types/map';
 export const GENERAL_API = process.env.API_URL + '/general';
 export const CUSTOMERS_API = process.env.API_URL + '/customers';
 
@@ -27,7 +26,7 @@ export const enum QUERY_PARAM_KEYS {
   order = 'order',
 }
 
-export const LIST_ERROR_MSG: Map = {
+export const LIST_ERROR_MSG: Record<string, Record<string, string>> = {
   name: {
     required: 'The customer name field is required',
     invalid: 'The customer name invalid',

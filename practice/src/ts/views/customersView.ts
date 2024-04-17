@@ -26,7 +26,11 @@ export class CustomerView {
     this.bindSearchDebounce(debounce(this.displayCustomersTable));
     this.bindSearchOnChanged();
     this.bindSortOnChanged();
-    this.modalView.formView.bindSubmitForm(this.addCustomer, this.editCustomer);
+    this.modalView.bindSubmitModal(
+      this.handlerAddCustomer,
+      this.handlerEditCustomer,
+      this.handlerDeleteCustomer,
+    );
   }
 
   displayCustomersTable = async (params: QueryParams): Promise<void> => {
@@ -47,16 +51,19 @@ export class CustomerView {
     }
   };
 
-  addCustomer = async (customer: CustomerFormData) => {
+  handlerAddCustomer = async (customer: CustomerFormData) => {
     await this.customerService.post(customer);
     await this.displayCustomersTable(this.params);
-    this.modalView.hideModal();
   };
 
-  editCustomer = async (customer: CustomerFormData, id: string) => {
+  handlerEditCustomer = async (customer: CustomerFormData, id: string) => {
     await this.customerService.put(customer, id);
     await this.displayCustomersTable(this.params);
-    this.modalView.hideModal();
+  };
+
+  handlerDeleteCustomer = async (id: string) => {
+    await this.customerService.delete(id);
+    await this.displayCustomersTable(this.params);
   };
 
   /**
