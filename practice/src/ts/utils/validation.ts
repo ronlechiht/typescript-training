@@ -44,7 +44,7 @@ export const validateForm = (data: Record<string, string>) => {
 };
 
 export const validateField = (field: string, input: string) => {
-  let error = null;
+  let error: string | null = null;
   if (Object.prototype.hasOwnProperty.call(validationSchema, field)) {
     const customerProperty = input;
     const validators = validationSchema[field as keyof typeof validationSchema];

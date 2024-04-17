@@ -6,7 +6,9 @@ export class ModalView {
   removeModal: HTMLElement;
   modalTitle: HTMLElement;
   closeModalBtn: HTMLElement;
-  addUpdateForm: HTMLElement;
+  closeRemoveModalBtn: HTMLElement;
+  acceptRemoveBtn: HTMLElement;
+  denyRemoveBtn: HTMLElement;
   formView: FormView;
 
   constructor() {
@@ -15,7 +17,13 @@ export class ModalView {
     this.removeModal = document.querySelector('.modal-remove')!;
     this.modalTitle = this.addUpdateModal.querySelector('.modal-title')!;
     this.closeModalBtn = this.addUpdateModal.querySelector('.btn-close-modal')!;
-    this.addUpdateForm = this.addUpdateModal.querySelector('.form-submit')!;
+    this.closeRemoveModalBtn = this.removeModal.querySelector(
+      '.btn-close-remove-modal',
+    )!;
+    this.acceptRemoveBtn =
+      this.removeModal.querySelector('.btn-accept-remove')!;
+    this.denyRemoveBtn = this.removeModal.querySelector('.btn-deny-remove')!;
+
     this.formView = new FormView();
 
     this.bindOpenModal();
@@ -56,6 +64,10 @@ export class ModalView {
     this.formView.resetInput();
   };
 
+  hideRemoveModal = () => {
+    this.removeModal.classList.remove('element-visible');
+  };
+
   bindOpenModal = () => {
     this.openModalBtn.addEventListener('click', () => {
       this.displayAddModal();
@@ -65,5 +77,36 @@ export class ModalView {
   bindCloseModal = () => {
     this.closeModalBtn.addEventListener('click', () => this.hideModal());
     this.formView.cancelBtn.addEventListener('click', () => this.hideModal());
+
+    this.closeRemoveModalBtn.addEventListener('click', () =>
+      this.hideRemoveModal(),
+    );
+    this.denyRemoveBtn.addEventListener('click', () => this.hideRemoveModal());
+  };
+
+  bindSubmitModal = (
+    addHandler: CallableFunction,
+    editHandler: CallableFunction,
+    deleteHandler: CallableFunction,
+  ) => {
+    this.formView.submitBtn.addEventListener('click', async (event) => {
+      event.preventDefault();
+      this.formView.hideFormErrors();
+      const customer = this.formView.getFormData();
+      if (customer) {
+        if (!FormView.customerID) {
+          await addHandler(customer);
+          this.hideModal();
+        } else {
+          await editHandler(customer, FormView.customerID);
+          this.hideModal();
+        }
+      }
+    });
+
+    this.acceptRemoveBtn.addEventListener('click', async () => {
+      await deleteHandler(FormView.customerID);
+      this.hideRemoveModal();
+    });
   };
 }
