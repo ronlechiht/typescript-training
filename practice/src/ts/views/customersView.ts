@@ -6,6 +6,9 @@ import { QueryParams } from '../types/queryParamsType';
 import { CustomerFormData } from '../types/formDataType';
 import { debounce } from '../utils/debounce';
 import { ModalView } from './modalView';
+import { displaySnackbar } from '../helpers/snackbar';
+import { SNACKBAR_MSG, SNACKBAR_STATUS } from '../constants/constants';
+import { displayLoading, hideLoading } from '../helpers/loading';
 
 export class CustomerView {
   customerService: HttpService<CustomerFormData>;
@@ -35,8 +38,10 @@ export class CustomerView {
 
   displayCustomersTable = async (params: QueryParams): Promise<void> => {
     const customersTable = document.querySelector('.customers-table-body')!;
+    displayLoading();
     try {
       const customers = await this.customerService.get(params);
+      hideLoading();
 
       if (!Object.keys(customers).length || customers === 'Not found') {
         customersTable.innerHTML = `
@@ -47,7 +52,8 @@ export class CustomerView {
 
       customersTable.innerHTML = genTable(customers, params);
     } catch (error) {
-      console.log(error);
+      hideLoading();
+      displaySnackbar(SNACKBAR_STATUS.failed, SNACKBAR_MSG.failed);
     }
   };
 
