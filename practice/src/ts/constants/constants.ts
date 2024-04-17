@@ -1,7 +1,8 @@
 export const GENERAL_API = process.env.API_URL + '/general';
 export const CUSTOMERS_API = process.env.API_URL + '/customers';
 
-export const DEBOUNCE_DELAY = 2000;
+export const DEBOUNCE_DELAY = 1000;
+export const SNACKBAR_DELAY = 2 * 1000;
 
 export const VALIDATE_REGEX = {
   phone: /\(\d{3}\)\s\d{3}-\d{4}$/,
@@ -46,4 +47,17 @@ export const LIST_ERROR_MSG: Record<string, Record<string, string>> = {
   country: {
     required: 'The country field is required',
   },
+};
+
+export const SNACKBAR_MSG: Record<string, string> = {
+  successAdd: 'Customer has been successfully added',
+  successEdit: 'Customer has been successfully updated',
+  successDelete: 'Customer has been successfully removed',
+  failed: 'Something went wrong',
+  lastPage: 'You are on the last page',
+};
+
+export const SNACKBAR_STATUS: Record<string, string> = {
+  success: 'success',
+  failed: 'failed',
 };
