@@ -1,6 +1,7 @@
 import { FormView } from './formView.ts';
 import { displaySnackbar } from '../helpers/snackbar.ts';
 import { SNACKBAR_MSG, SNACKBAR_STATUS } from '../constants/constants.ts';
+import { displayLoading, hideLoading } from '../helpers/loading.ts';
 
 export class ModalView {
   openModalBtn: HTMLElement;
@@ -95,33 +96,39 @@ export class ModalView {
       event.preventDefault();
       this.formView.hideFormErrors();
       const customer = this.formView.getFormData();
-      if (customer) {
-        if (!FormView.customerID) {
-          try {
-            await addHandler(customer);
-            this.hideModal();
-            displaySnackbar(SNACKBAR_STATUS.success, SNACKBAR_MSG.successAdd);
-          } catch (error) {
-            displaySnackbar(SNACKBAR_STATUS.failed, SNACKBAR_MSG.failed);
-          }
-        } else {
-          try {
-            await editHandler(customer, FormView.customerID);
-            this.hideModal();
-            displaySnackbar(SNACKBAR_STATUS.success, SNACKBAR_MSG.successEdit);
-          } catch (error) {
-            displaySnackbar(SNACKBAR_STATUS.failed, SNACKBAR_MSG.failed);
-          }
+      if (!customer) return;
+
+      displayLoading();
+
+      if (!FormView.customerID) {
+        try {
+          await addHandler(customer);
+          this.hideModal();
+          displaySnackbar(SNACKBAR_STATUS.success, SNACKBAR_MSG.successAdd);
+        } catch (error) {
+          hideLoading();
+          displaySnackbar(SNACKBAR_STATUS.failed, SNACKBAR_MSG.failed);
+        }
+      } else {
+        try {
+          await editHandler(customer, FormView.customerID);
+          this.hideModal();
+          displaySnackbar(SNACKBAR_STATUS.success, SNACKBAR_MSG.successEdit);
+        } catch (error) {
+          hideLoading();
+          displaySnackbar(SNACKBAR_STATUS.failed, SNACKBAR_MSG.failed);
         }
       }
     });
 
     this.acceptRemoveBtn.addEventListener('click', async () => {
+      displayLoading();
       try {
         await deleteHandler(FormView.customerID);
         this.hideRemoveModal();
         displaySnackbar(SNACKBAR_STATUS.success, SNACKBAR_MSG.successDelete);
       } catch (error) {
+        hideLoading;
         displaySnackbar(SNACKBAR_STATUS.failed, SNACKBAR_MSG.failed);
       }
     });
