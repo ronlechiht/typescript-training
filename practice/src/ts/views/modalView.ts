@@ -1,7 +1,7 @@
-import { FormView } from './formView.ts';
-import { displaySnackbar } from '../helpers/snackbar.ts';
-import { SNACKBAR_MSG, SNACKBAR_STATUS } from '../constants/constants.ts';
-import { displayLoading, hideLoading } from '../helpers/loading.ts';
+import { FormView } from './formView';
+import { displaySnackbar } from '../helpers/snackbar';
+import { SNACKBAR_MSG, SNACKBAR_STATUS } from '../constants/constants';
+import { displayLoading, hideLoading } from '../helpers/loading';
 
 export class ModalView {
   openModalBtn: HTMLElement;

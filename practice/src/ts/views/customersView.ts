@@ -43,6 +43,18 @@ export class CustomerView {
       const customers = await this.customerService.get(params);
       hideLoading();
 
+      //Disable next pagination at last page
+      if (
+        !Object.keys(customers).length &&
+        this.params[QUERY_PARAM_KEYS.page] > 1
+      ) {
+        this.params[QUERY_PARAM_KEYS.page] -= 1;
+        displaySnackbar(SNACKBAR_STATUS.failed, SNACKBAR_MSG.lastPage);
+        const nextBtn = document.querySelector('.btn-pagination-next')!;
+        (nextBtn as HTMLButtonElement).disabled = true;
+        return;
+      }
+
       if (!Object.keys(customers).length || customers === 'Not found') {
         customersTable.innerHTML = `
         <p class="message-empty">There are no customers in the list</p>
@@ -69,6 +81,11 @@ export class CustomerView {
 
   handlerDeleteCustomer = async (id: string) => {
     await this.customerService.delete(id);
+    //Load previous page if delete last customer
+    const tableBody = document.querySelector('.table-body')!;
+    if (tableBody.children.length === 2) {
+      this.params[QUERY_PARAM_KEYS.page] -= 1;
+    }
     await this.displayCustomersTable(this.params);
   };
 
@@ -89,6 +106,9 @@ export class CustomerView {
     });
   };
 
+  /**
+   * Add search event with debounce effect
+   */
   bindSearchDebounce = (handler: CallableFunction) => {
     const searchInput = document.querySelector('.search-input')!;
     searchInput.addEventListener('keyup', () => {
@@ -100,6 +120,9 @@ export class CustomerView {
     });
   };
 
+  /**
+   * Add search event with enter action
+   */
   bindSearchOnChanged = () => {
     const searchInput = document.querySelector('.search-input')!;
     searchInput.addEventListener('change', () => {
@@ -111,6 +134,9 @@ export class CustomerView {
     });
   };
 
+  /**
+   * Add sort event when change value of sort box
+   */
   bindSortOnChanged = () => {
     const sortOption = <HTMLInputElement>(
       document.querySelector('.sort-option-list')!

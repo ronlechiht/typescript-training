@@ -1,4 +1,4 @@
-import { SNACKBAR_DELAY } from '../constants/constants.ts';
+import { SNACKBAR_DELAY } from '../constants/constants';
 
 const snackbar = document.querySelector('.snackbar')!;
 const snackbarMsg = snackbar.querySelector('.snackbar-msg')!;

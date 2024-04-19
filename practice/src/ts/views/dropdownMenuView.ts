@@ -1,4 +1,4 @@
-import { ModalView } from './modalView.ts';
+import { ModalView } from './modalView';
 export class DropdownMenuView {
   modalView: ModalView;
 
