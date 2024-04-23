@@ -49,15 +49,10 @@ export class CustomerView {
       ) {
         this.params[QUERY_PARAM_KEYS.page] -= 1;
         displaySnackbar(SNACKBAR_STATUS.failed, SNACKBAR_MSG.lastPage);
-        const nextBtn = document.querySelector('.btn-pagination-next')!;
-        (nextBtn as HTMLButtonElement).disabled = true;
-        return;
-      }
-
-      if (!Object.keys(customers).length || customers === 'Not found') {
-        customersTable.innerHTML = `
-        <p class="message-empty">There are no customers in the list</p>
-        `;
+        const nextBtn: HTMLButtonElement = document.querySelector(
+          '.btn-pagination-next',
+        )!;
+        nextBtn.disabled = true;
         return;
       }
 
@@ -109,11 +104,10 @@ export class CustomerView {
    * Add search event with debounce effect
    */
   bindSearchDebounce = (handler: CallableFunction) => {
-    const searchInput = document.querySelector('.search-input')!;
+    const searchInput: HTMLInputElement =
+      document.querySelector('.search-input')!;
     searchInput.addEventListener('keyup', () => {
-      this.params[QUERY_PARAM_KEYS.search] = (
-        searchInput as HTMLInputElement
-      ).value;
+      this.params[QUERY_PARAM_KEYS.search] = searchInput.value;
 
       handler(this.params);
     });
@@ -123,11 +117,10 @@ export class CustomerView {
    * Add search event with enter action
    */
   bindSearchOnChanged = () => {
-    const searchInput = document.querySelector('.search-input')!;
+    const searchInput: HTMLInputElement =
+      document.querySelector('.search-input')!;
     searchInput.addEventListener('change', () => {
-      this.params[QUERY_PARAM_KEYS.search] = (
-        searchInput as HTMLInputElement
-      ).value;
+      this.params[QUERY_PARAM_KEYS.search] = searchInput.value;
 
       this.displayCustomersTable(this.params);
     });

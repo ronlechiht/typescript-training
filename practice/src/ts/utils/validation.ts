@@ -1,5 +1,4 @@
 import { VALIDATE_REGEX } from '../constants/constants';
-import { CustomerFormData } from '../types/formDataType';
 
 const validateEmptiness = (input: string): string | null => {
   if (input) return null;
@@ -36,7 +35,7 @@ export const validateForm = (data: Record<string, string>) => {
   const errors: Record<string, string> = {};
 
   for (const key in data) {
-    const error = validateField(key, data[key as keyof CustomerFormData]);
+    const error = validateField(key, data[key]);
     if (error) errors[key] = error;
   }
 

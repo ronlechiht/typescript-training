@@ -27,9 +27,10 @@ export class FormView {
   }
 
   bindFormatToPhone = () => {
-    this.inputPhone.addEventListener('keyup', () =>
-      formatPhoneNumber(this.inputPhone),
-    );
+    this.inputPhone.addEventListener('keyup', () => {
+      if (this.inputPhone.value.length === 10)
+        this.inputPhone.value = formatPhoneNumber(this.inputPhone.value);
+    });
   };
 
   bindValidateFields = () => {
