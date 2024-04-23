@@ -20,7 +20,7 @@ export class HttpService {
   get<U>(params?: QueryParams): Promise<U | string> {
     let path: string = this.baseAPI;
     if (params) {
-      const queryString: string = buildQueryString(params);
+      const queryString: string = buildQueryString<QueryParams>(params);
       path = this.baseAPI + queryString;
     }
 
