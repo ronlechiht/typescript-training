@@ -1,6 +1,5 @@
 //Import
-import { CUSTOMERS_API, QUERY_PARAM_KEYS } from '../constants/constants';
-import { HttpService } from '../services/httpServices';
+import { QUERY_PARAM_KEYS } from '../constants/constants';
 import { genTable } from '../templates/tableTemplate';
 import { QueryParams } from '../types/queryParamsType';
 import { CustomerFormData } from '../types/formDataType';
@@ -9,14 +8,14 @@ import { ModalView } from './modalView';
 import { displaySnackbar } from '../helpers/snackbar';
 import { SNACKBAR_MSG, SNACKBAR_STATUS } from '../constants/constants';
 import { displayLoading, hideLoading } from '../helpers/loading';
-
+import { CustomerService } from '../services/customerService';
 export class CustomerView {
-  customerService: HttpService<CustomerFormData>;
+  customerService: CustomerService;
   params: QueryParams;
   modalView: ModalView;
 
   constructor() {
-    this.customerService = new HttpService<CustomerFormData>(CUSTOMERS_API);
+    this.customerService = new CustomerService();
     this.params = {
       [QUERY_PARAM_KEYS.page]: 1,
       [QUERY_PARAM_KEYS.limit]: 8,
@@ -40,7 +39,7 @@ export class CustomerView {
     const customersTable = document.querySelector('.customers-table-body')!;
     displayLoading();
     try {
-      const customers = await this.customerService.get(params);
+      const customers = await this.customerService.getCustomer(params);
       hideLoading();
 
       //Disable next pagination at last page
@@ -70,17 +69,17 @@ export class CustomerView {
   };
 
   handlerAddCustomer = async (customer: CustomerFormData) => {
-    await this.customerService.post(customer);
+    await this.customerService.addCustomer(customer);
     await this.displayCustomersTable(this.params);
   };
 
   handlerEditCustomer = async (customer: CustomerFormData, id: string) => {
-    await this.customerService.put(customer, id);
+    await this.customerService.updateCustomer(customer, id);
     await this.displayCustomersTable(this.params);
   };
 
   handlerDeleteCustomer = async (id: string) => {
-    await this.customerService.delete(id);
+    await this.customerService.removeCustomer(id);
     //Load previous page if delete last customer
     const tableBody = document.querySelector('.table-body')!;
     if (tableBody.children.length === 2) {

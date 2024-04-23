@@ -45,7 +45,8 @@ export const validateForm = (data: Record<string, string>) => {
 
 export const validateField = (field: string, input: string) => {
   let error: string | null = null;
-  if (Object.prototype.hasOwnProperty.call(validationSchema, field)) {
+  // eslint-disable-next-line no-prototype-builtins
+  if (validationSchema.hasOwnProperty(field)) {
     const customerProperty = input;
     const validators = validationSchema[field as keyof typeof validationSchema];
     for (const validator of validators) {

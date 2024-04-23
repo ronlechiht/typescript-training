@@ -1,16 +1,10 @@
 import { buildQueryString } from '../utils/buildQueryString';
-import { Customer } from '../types/customerType';
-import { GeneralInformation } from '../types/generalInformationType';
 import { QueryParams } from '../types/queryParamsType';
 
-export class HttpService<Type> {
+export class HttpService {
   constructor(private baseAPI: string) {}
 
-  async request(
-    path: string,
-    method: string,
-    data?: Type,
-  ): Promise<Customer[]> {
+  async request<T, U>(path: string, method: string, data?: T): Promise<U> {
     const res = await fetch(path, {
       method,
       headers: {
@@ -23,9 +17,7 @@ export class HttpService<Type> {
     return res.json();
   }
 
-  get(
-    params?: QueryParams,
-  ): Promise<Customer[] | GeneralInformation[] | string> {
+  get<U>(params?: QueryParams): Promise<U | string> {
     let path: string = this.baseAPI;
     if (params) {
       const queryString: string = buildQueryString(params);
@@ -35,17 +27,17 @@ export class HttpService<Type> {
     return this.request(path, 'GET');
   }
 
-  async post(data: Type): Promise<void> {
-    await this.request(this.baseAPI, 'POST', data);
+  async post<T, U>(data: T): Promise<U | string> {
+    return this.request(this.baseAPI, 'POST', data);
   }
 
-  async put(data: Type, id: string): Promise<void> {
+  async put<T, U>(data: T, id: string): Promise<U | string> {
     const path = `${this.baseAPI}/${id}`;
-    await this.request(path, 'PUT', data);
+    return this.request(path, 'PUT', data);
   }
 
-  async delete(id: string): Promise<void> {
+  async delete<U>(id: string): Promise<U | string> {
     const path = `${this.baseAPI}/${id}`;
-    await this.request(path, 'DELETE');
+    return this.request(path, 'DELETE');
   }
 }

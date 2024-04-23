@@ -5,7 +5,7 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "prepare": "husky"
+    "prepare": "cd .. && husky practice/.husky"
   },
   "repository": {
     "type": "git",

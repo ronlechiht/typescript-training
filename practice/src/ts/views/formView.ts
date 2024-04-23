@@ -95,7 +95,7 @@ export class FormView {
 
   resetInput = () => {
     this.inputFields.forEach((inputField) => {
-      (inputField as HTMLInputElement).value = '';
+      inputField.value = '';
     });
 
     this.inputStatus.checked = false;
@@ -103,7 +103,7 @@ export class FormView {
 
   hideFormErrors = () => {
     this.inputFields.forEach((inputField) => {
-      this.hideFieldError(inputField as HTMLInputElement);
+      this.hideFieldError(inputField);
     });
   };
 
