@@ -4,6 +4,7 @@ import { SNACKBAR_MSG, SNACKBAR_STATUS } from '../constants/constants';
 import { displayLoading, hideLoading } from '../helpers/loading';
 
 export class ModalView {
+  customerID: string | null;
   openModalBtn: HTMLElement;
   addUpdateModal: HTMLElement;
   removeModal: HTMLElement;
@@ -15,6 +16,7 @@ export class ModalView {
   formView: FormView;
 
   constructor() {
+    this.customerID = null;
     this.openModalBtn = document.querySelector('.add-customer-btn')!;
     this.addUpdateModal = document.querySelector('.modal-add-update')!;
     this.removeModal = document.querySelector('.modal-remove')!;
@@ -34,13 +36,13 @@ export class ModalView {
   }
 
   displayAddModal = () => {
-    FormView.customerID = null;
+    this.customerID = null;
     this.addUpdateModal.classList.add('element-visible');
     this.modalTitle.innerHTML = 'Add Customer';
   };
 
   displayEditModal = (id: string) => {
-    FormView.customerID = id;
+    this.customerID = id;
     this.addUpdateModal.classList.add('element-visible');
     this.modalTitle.innerHTML = 'Update Customer';
     //Get customer row
@@ -57,7 +59,7 @@ export class ModalView {
   };
 
   displayRemoveModal = (id: string) => {
-    FormView.customerID = id;
+    this.customerID = id;
     this.removeModal.classList.add('element-visible');
   };
 
@@ -100,7 +102,7 @@ export class ModalView {
 
       displayLoading();
 
-      if (!FormView.customerID) {
+      if (!this.customerID) {
         try {
           await addHandler(customer);
           this.hideModal();
@@ -111,7 +113,7 @@ export class ModalView {
         }
       } else {
         try {
-          await editHandler(customer, FormView.customerID);
+          await editHandler(customer, this.customerID);
           this.hideModal();
           displaySnackbar(SNACKBAR_STATUS.success, SNACKBAR_MSG.successEdit);
         } catch (error) {
@@ -124,7 +126,7 @@ export class ModalView {
     this.acceptRemoveBtn.addEventListener('click', async () => {
       displayLoading();
       try {
-        await deleteHandler(FormView.customerID);
+        await deleteHandler(this.customerID);
         this.hideRemoveModal();
         displaySnackbar(SNACKBAR_STATUS.success, SNACKBAR_MSG.successDelete);
       } catch (error) {

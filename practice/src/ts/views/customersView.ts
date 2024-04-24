@@ -9,10 +9,12 @@ import { displaySnackbar } from '../helpers/snackbar';
 import { SNACKBAR_MSG, SNACKBAR_STATUS } from '../constants/constants';
 import { displayLoading, hideLoading } from '../helpers/loading';
 import { CustomerService } from '../services/customerService';
+import { DropdownMenuView } from './dropdownMenuView';
 export class CustomerView {
   customerService: CustomerService;
   params: QueryParams;
   modalView: ModalView;
+  dropdownMenuView: DropdownMenuView;
 
   constructor() {
     this.customerService = new CustomerService();
@@ -23,11 +25,16 @@ export class CustomerView {
       [QUERY_PARAM_KEYS.order]: 'desc',
     };
     this.modalView = new ModalView();
+    this.dropdownMenuView = new DropdownMenuView();
 
     this.bindPagination();
     this.bindSearchDebounce(debounce(this.displayCustomersTable));
     this.bindSearchOnChanged();
     this.bindSortOnChanged();
+    this.dropdownMenuView.bindClickDropdownBtn(
+      this.modalView.displayEditModal,
+      this.modalView.displayRemoveModal,
+    );
     this.modalView.bindSubmitModal(
       this.handlerAddCustomer,
       this.handlerEditCustomer,
