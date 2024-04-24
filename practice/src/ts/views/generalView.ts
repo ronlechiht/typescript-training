@@ -1,19 +1,11 @@
 //Import
-import { GENERAL_API } from '../constants/constants';
-import { HttpService } from '../services/httpServices';
-import { GeneralInformation } from '../types/generalInformationType';
+import { GeneralInformationService } from '../services/generalInformationService';
 
-const generalService = new HttpService(GENERAL_API);
-
-//Get general information from API
-async function getGeneralInformation(): Promise<GeneralInformation> {
-  const res = await generalService.get();
-  return res[0] as GeneralInformation;
-}
+const generalService = new GeneralInformationService();
 
 //Display general information in general table
 export async function displayGeneralInformation(): Promise<void> {
-  const generalInformation = await getGeneralInformation();
+  const generalInformation = await generalService.getGeneralInformation();
 
   //General information HTML DOM elements
   const totalCustomers = document.querySelector('.customers-quantity')!;

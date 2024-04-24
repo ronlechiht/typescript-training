@@ -1,13 +1,8 @@
-import { ModalView } from './modalView.ts';
 export class DropdownMenuView {
-  modalView: ModalView;
-
-  constructor() {
-    this.modalView = new ModalView();
-    this.bindClickDropdownBtn();
-  }
-
-  bindClickDropdownBtn = () => {
+  bindClickDropdownBtn = (
+    displayEditModal: CallableFunction,
+    displayRemoveModal: CallableFunction,
+  ) => {
     const customersTable = document.querySelector('.customers-table-body')!;
     customersTable.addEventListener('click', (event) => {
       if (
@@ -27,29 +22,24 @@ export class DropdownMenuView {
           dropdownMenu.classList.add('element-visible');
           //Get customer row element
           const id = (dropdownMenu.parentNode!.parentNode! as Element).id;
-          this.bindDropdownMenuOptions(editOption, removeOption, id);
+
+          //Bind event display edit modal
+          editOption.addEventListener('click', (event) => {
+            (
+              (event.target! as Element).parentNode! as Element
+            ).classList.remove('element-visible');
+            displayEditModal(id);
+          });
+
+          //Bind event display remove modal
+          removeOption.addEventListener('click', (event) => {
+            (
+              (event.target! as Element).parentNode! as Element
+            ).classList.remove('element-visible');
+            displayRemoveModal(id);
+          });
         }
       }
-    });
-  };
-
-  bindDropdownMenuOptions = (
-    editOption: Element,
-    removeOption: Element,
-    id: string,
-  ) => {
-    editOption.addEventListener('click', (event) => {
-      ((event.target! as Element).parentNode! as Element).classList.remove(
-        'element-visible',
-      );
-      this.modalView.displayEditModal(id);
-    });
-
-    removeOption.addEventListener('click', (event) => {
-      ((event.target! as Element).parentNode! as Element).classList.remove(
-        'element-visible',
-      );
-      this.modalView.displayRemoveModal(id);
     });
   };
 }

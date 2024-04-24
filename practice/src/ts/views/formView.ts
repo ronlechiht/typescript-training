@@ -3,7 +3,7 @@ import { LIST_ERROR_MSG } from '../constants/constants';
 import { formatPhoneNumber } from '../utils/formatPhoneNumber';
 
 export class FormView {
-  static customerID: string | null;
+  //static customerID: string | null;
   addUpdateForm: HTMLFormElement;
   submitBtn: HTMLElement;
   cancelBtn: HTMLElement;
@@ -12,7 +12,7 @@ export class FormView {
   inputStatus: HTMLInputElement;
 
   constructor() {
-    FormView.customerID = null;
+    //FormView.customerID = null;
     this.addUpdateForm = document.querySelector('.form-submit')!;
     this.submitBtn = this.addUpdateForm.querySelector('.btn-submit')!;
     this.cancelBtn = this.addUpdateForm.querySelector('.btn-cancel')!;
@@ -27,9 +27,10 @@ export class FormView {
   }
 
   bindFormatToPhone = () => {
-    this.inputPhone.addEventListener('keyup', () =>
-      formatPhoneNumber(this.inputPhone),
-    );
+    this.inputPhone.addEventListener('keyup', () => {
+      if (this.inputPhone.value.length === 10)
+        this.inputPhone.value = formatPhoneNumber(this.inputPhone.value);
+    });
   };
 
   bindValidateFields = () => {
@@ -95,7 +96,7 @@ export class FormView {
 
   resetInput = () => {
     this.inputFields.forEach((inputField) => {
-      (inputField as HTMLInputElement).value = '';
+      inputField.value = '';
     });
 
     this.inputStatus.checked = false;
@@ -103,27 +104,12 @@ export class FormView {
 
   hideFormErrors = () => {
     this.inputFields.forEach((inputField) => {
-      this.hideFieldError(inputField as HTMLInputElement);
+      this.hideFieldError(inputField);
     });
   };
 
   hideFieldError = (inputField: HTMLInputElement) => {
     inputField.classList.remove('field-error');
     inputField.nextElementSibling!.innerHTML = '';
-  };
-
-  bindSubmitForm = (
-    addHandler: CallableFunction,
-    editHandler: CallableFunction,
-  ) => {
-    this.submitBtn.addEventListener('click', async (event) => {
-      event.preventDefault();
-      this.hideFormErrors();
-      const customer = this.getFormData();
-      if (customer) {
-        if (!FormView.customerID) addHandler(customer);
-        else editHandler(customer, FormView.customerID);
-      }
-    });
   };
 }

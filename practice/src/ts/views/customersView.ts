@@ -1,6 +1,5 @@
 //Import
-import { CUSTOMERS_API, QUERY_PARAM_KEYS } from '../constants/constants';
-import { HttpService } from '../services/httpServices';
+import { QUERY_PARAM_KEYS } from '../constants/constants';
 import { genTable } from '../templates/tableTemplate';
 import { QueryParams } from '../types/queryParamsType';
 import { CustomerFormData } from '../types/formDataType';
@@ -9,14 +8,16 @@ import { ModalView } from './modalView';
 import { displaySnackbar } from '../helpers/snackbar';
 import { SNACKBAR_MSG, SNACKBAR_STATUS } from '../constants/constants';
 import { displayLoading, hideLoading } from '../helpers/loading';
-
+import { CustomerService } from '../services/customerService';
+import { DropdownMenuView } from './dropdownMenuView';
 export class CustomerView {
-  customerService: HttpService<CustomerFormData>;
+  customerService: CustomerService;
   params: QueryParams;
   modalView: ModalView;
+  dropdownMenuView: DropdownMenuView;
 
   constructor() {
-    this.customerService = new HttpService<CustomerFormData>(CUSTOMERS_API);
+    this.customerService = new CustomerService();
     this.params = {
       [QUERY_PARAM_KEYS.page]: 1,
       [QUERY_PARAM_KEYS.limit]: 8,
@@ -24,11 +25,16 @@ export class CustomerView {
       [QUERY_PARAM_KEYS.order]: 'desc',
     };
     this.modalView = new ModalView();
+    this.dropdownMenuView = new DropdownMenuView();
 
     this.bindPagination();
     this.bindSearchDebounce(debounce(this.displayCustomersTable));
     this.bindSearchOnChanged();
     this.bindSortOnChanged();
+    this.dropdownMenuView.bindClickDropdownBtn(
+      this.modalView.displayEditModal,
+      this.modalView.displayRemoveModal,
+    );
     this.modalView.bindSubmitModal(
       this.handlerAddCustomer,
       this.handlerEditCustomer,
@@ -40,13 +46,20 @@ export class CustomerView {
     const customersTable = document.querySelector('.customers-table-body')!;
     displayLoading();
     try {
-      const customers = await this.customerService.get(params);
+      const customers = await this.customerService.getCustomer(params);
       hideLoading();
 
-      if (!Object.keys(customers).length || customers === 'Not found') {
-        customersTable.innerHTML = `
-        <p class="message-empty">There are no customers in the list</p>
-        `;
+      //Disable next pagination at last page
+      if (
+        !Object.keys(customers).length &&
+        this.params[QUERY_PARAM_KEYS.page] > 1
+      ) {
+        this.params[QUERY_PARAM_KEYS.page] -= 1;
+        displaySnackbar(SNACKBAR_STATUS.failed, SNACKBAR_MSG.lastPage);
+        const nextBtn: HTMLButtonElement = document.querySelector(
+          '.btn-pagination-next',
+        )!;
+        nextBtn.disabled = true;
         return;
       }
 
@@ -58,17 +71,22 @@ export class CustomerView {
   };
 
   handlerAddCustomer = async (customer: CustomerFormData) => {
-    await this.customerService.post(customer);
+    await this.customerService.addCustomer(customer);
     await this.displayCustomersTable(this.params);
   };
 
   handlerEditCustomer = async (customer: CustomerFormData, id: string) => {
-    await this.customerService.put(customer, id);
+    await this.customerService.updateCustomer(customer, id);
     await this.displayCustomersTable(this.params);
   };
 
   handlerDeleteCustomer = async (id: string) => {
-    await this.customerService.delete(id);
+    await this.customerService.removeCustomer(id);
+    //Load previous page if delete last customer
+    const tableBody = document.querySelector('.table-body')!;
+    if (tableBody.children.length === 2) {
+      this.params[QUERY_PARAM_KEYS.page] -= 1;
+    }
     await this.displayCustomersTable(this.params);
   };
 
@@ -89,28 +107,35 @@ export class CustomerView {
     });
   };
 
+  /**
+   * Add search event with debounce effect
+   */
   bindSearchDebounce = (handler: CallableFunction) => {
-    const searchInput = document.querySelector('.search-input')!;
+    const searchInput: HTMLInputElement =
+      document.querySelector('.search-input')!;
     searchInput.addEventListener('keyup', () => {
-      this.params[QUERY_PARAM_KEYS.search] = (
-        searchInput as HTMLInputElement
-      ).value;
+      this.params[QUERY_PARAM_KEYS.search] = searchInput.value;
 
       handler(this.params);
     });
   };
 
+  /**
+   * Add search event with enter action
+   */
   bindSearchOnChanged = () => {
-    const searchInput = document.querySelector('.search-input')!;
+    const searchInput: HTMLInputElement =
+      document.querySelector('.search-input')!;
     searchInput.addEventListener('change', () => {
-      this.params[QUERY_PARAM_KEYS.search] = (
-        searchInput as HTMLInputElement
-      ).value;
+      this.params[QUERY_PARAM_KEYS.search] = searchInput.value;
 
       this.displayCustomersTable(this.params);
     });
   };
 
+  /**
+   * Add sort event when change value of sort box
+   */
   bindSortOnChanged = () => {
     const sortOption = <HTMLInputElement>(
       document.querySelector('.sort-option-list')!

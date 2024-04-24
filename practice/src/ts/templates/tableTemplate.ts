@@ -53,6 +53,12 @@ export function genTable(
   customers: object | string,
   params: QueryParams,
 ): string {
+  if (!Object.keys(customers).length || customers === 'Not found') {
+    return `
+        <p class="message-empty">There are no customers in the list</p>
+        `;
+  }
+
   const firstRecord = (Number(params.page) - 1) * Number(params.limit) + 1;
   const lastRecord =
     (Number(params.page) - 1) * Number(params.limit) +
