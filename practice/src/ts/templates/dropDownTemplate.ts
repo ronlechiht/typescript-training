@@ -1,4 +1,4 @@
-export function genDropDownMenuContainer(): string {
+export function renderDropDownMenuContainer(): string {
   return `
     <div class="dropdown-menu-container">
       <div class="btn-dropdown">

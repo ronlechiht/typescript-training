@@ -1,6 +1,6 @@
 //Import
 import { QUERY_PARAM_KEYS } from '../constants/constants';
-import { genTable } from '../templates/tableTemplate';
+import { renderTable } from '../templates/tableTemplate';
 import { QueryParams } from '../types/queryParamsType';
 import { CustomerFormData } from '../types/formDataType';
 import { debounce } from '../utils/debounce';
@@ -63,7 +63,7 @@ export class CustomerView {
         return;
       }
 
-      customersTable.innerHTML = genTable(customers, params);
+      customersTable.innerHTML = renderTable(customers, params);
     } catch (error) {
       hideLoading();
       displaySnackbar(SNACKBAR_STATUS.failed, SNACKBAR_MSG.failed);

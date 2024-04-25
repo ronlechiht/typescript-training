@@ -2,11 +2,11 @@ import {
   CUSTOMER_TABLE_HEADING,
   QUERY_PARAM_KEYS,
 } from '../constants/constants';
-import { genCustomersList } from './customerTemplate';
+import { renderCustomersList } from './customerTemplate';
 import { QueryParams } from '../types/queryParamsType';
 import { Customer } from '../types/customerType';
 
-function genTableHeader(CUSTOMER_TABLE_HEADING: string[]): string {
+function renderTableHeader(CUSTOMER_TABLE_HEADING: string[]): string {
   const headings = CUSTOMER_TABLE_HEADING.map((heading) => {
     return `
       <h4 class="table-heading">${heading}</h4>
@@ -19,7 +19,7 @@ function genTableHeader(CUSTOMER_TABLE_HEADING: string[]): string {
   `;
 }
 
-function genTableFooter(
+function renderTableFooter(
   firstRecord: number,
   lastRecord: number,
   pageSize: number,
@@ -50,7 +50,7 @@ function genTableFooter(
   `;
 }
 
-export function genTable(
+export function renderTable(
   customers: Customer[] | string,
   params: QueryParams,
 ): string {
@@ -66,8 +66,8 @@ export function genTable(
     Object.keys(customers).length;
 
   return `
-    ${genTableHeader(CUSTOMER_TABLE_HEADING)}
-    ${genCustomersList(customers)}
-    ${genTableFooter(firstRecord, lastRecord, params[QUERY_PARAM_KEYS.limit])}
+    ${renderTableHeader(CUSTOMER_TABLE_HEADING)}
+    ${renderCustomersList(customers)}
+    ${renderTableFooter(firstRecord, lastRecord, params[QUERY_PARAM_KEYS.limit])}
   `;
 }
