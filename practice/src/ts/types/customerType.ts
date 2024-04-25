@@ -1,9 +1,5 @@
-export interface Customer {
+import { CustomerFormData } from './formDataType';
+
+export interface Customer extends CustomerFormData {
   id: string;
-  name: string;
-  company: string;
-  phone: string;
-  email: string;
-  country: string;
-  status: string;
 }
