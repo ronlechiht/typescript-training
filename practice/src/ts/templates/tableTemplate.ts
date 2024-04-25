@@ -4,6 +4,7 @@ import {
 } from '../constants/constants';
 import { genCustomersList } from './customerTemplate';
 import { QueryParams } from '../types/queryParamsType';
+import { Customer } from '../types/customerType';
 
 function genTableHeader(CUSTOMER_TABLE_HEADING: string[]): string {
   const headings = CUSTOMER_TABLE_HEADING.map((heading) => {
@@ -50,7 +51,7 @@ function genTableFooter(
 }
 
 export function genTable(
-  customers: object | string,
+  customers: Customer[] | string,
   params: QueryParams,
 ): string {
   if (!Object.keys(customers).length || customers === 'Not found') {

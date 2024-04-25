@@ -16,7 +16,7 @@ function genCustomer(customer: Customer): string {
   return cells.join('');
 }
 
-export function genCustomersList(customers: object | string): string {
+export function genCustomersList(customers: Customer[] | string): string {
   const rows = Object.values(customers).map((customer) => {
     return `
     <li class="customer" id="${customer['id']}"}>${genCustomer(customer) + genDropDownMenuContainer()}</li>
@@ -30,3 +30,25 @@ export function genCustomersList(customers: object | string): string {
     </ul>
   `;
 }
+
+/*const customer = {
+  name: 'Ron',
+  age: 26,
+};
+
+type Type = string | number;
+
+//Type utils
+//Type guard
+//Naming gen => render
+let variable: Type = 10;
+variable = '10';
+if (typeof variable === 'number') {
+
+}
+
+console.log(parseInt(variable));
+
+type CustomerKey = keyof typeof customer;
+const key: CustomerKey = 'name';
+*/
